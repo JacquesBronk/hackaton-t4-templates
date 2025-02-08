@@ -1,33 +1,10 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ assembly name="Newtonsoft.Json" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.IO" #>
-<#@ import namespace="Newtonsoft.Json" #>
-<#@ import namespace="Newtonsoft.Json.Linq" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="System.Diagnostics" #>
-<#@ output extension=".html" #>
 
-<# 
-    var JsonDir = Host.ResolvePath("..\\..\\Definition.json");
-    var Json = System.IO.File.ReadAllText(JsonDir);
-    string jsonContent = File.ReadAllText(jsonFilePath);
-    JObject data = JObject.Parse(jsonContent);
-    string outputBasePath = Path.GetDirectoryName(Host.TemplateFile);
-      
-    foreach (var page in data["DbTable"])
-    {
-        string title = (string)page["TableName"];
-        string outputFilePath = Path.Combine(outputBasePath, $"{title}.html");
-#>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><#= title #></title>
+    <title>Rental</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -146,7 +123,7 @@
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
     
-    fetch('http://localhost:5000/<#=title#>', {
+    fetch('http://localhost:5000/Rental', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -166,7 +143,7 @@
 
 
    function loadTableData() {
-      fetch('http://localhost:5000/<#=title#>')
+      fetch('http://localhost:5000/Rental')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
@@ -203,14 +180,17 @@
    }
 
 function editRecord(id) {
-    fetch(`http://localhost:5000/<#=title#>/${id}`)
+    fetch(`http://localhost:5000/Rental/${id}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('editId').value = data.id;
-            <# foreach (var column in page["Columns"]) { #>
-            document.getElementById('edit<#= column["Name"] #>').value = data.<#= column["Name"] #>;
-            <# } #>
-            $('#editModal').modal('show');
+                        document.getElementById('editRentalId').value = data.RentalId;
+                        document.getElementById('editRentalDate').value = data.RentalDate;
+                        document.getElementById('editReturnDate').value = data.ReturnDate;
+                        document.getElementById('editRentalFee').value = data.RentalFee;
+                        document.getElementById('editCustomerId').value = data.CustomerId;
+                        document.getElementById('editVehicleId').value = data.VehicleId;
+                        $('#editModal').modal('show');
         })
         .catch(error => console.error('Error:', error));
 }
@@ -218,12 +198,15 @@ function editRecord(id) {
 function updateRecord() {
     const id = document.getElementById('editId').value;
     const data = {
-        <# foreach (var column in page["Columns"]) { #>
-        <#= column["Name"] #>: document.getElementById('edit<#= column["Name"] #>').value,
-        <# } #>
-    };
+                RentalId: document.getElementById('editRentalId').value,
+                RentalDate: document.getElementById('editRentalDate').value,
+                ReturnDate: document.getElementById('editReturnDate').value,
+                RentalFee: document.getElementById('editRentalFee').value,
+                CustomerId: document.getElementById('editCustomerId').value,
+                VehicleId: document.getElementById('editVehicleId').value,
+            };
 
-    fetch(`http://localhost:5000/<#=title#>/${id}`, {
+    fetch(`http://localhost:5000/Rental/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -240,7 +223,7 @@ function updateRecord() {
 
 function deleteRecord(id) {
     if (confirm('Are you sure you want to delete this record?')) {
-        fetch(`http://localhost:5000/<#=title#>/${id}`, {
+        fetch(`http://localhost:5000/Rental/${id}`, {
             method: 'DELETE'
         })
         .then(() => loadTableData())
@@ -260,20 +243,22 @@ function deleteRecord(id) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <# foreach (var navPage in data["DbTable"]) { 
-                        string navTitle = (string)navPage["TableName"];
-                    #>
-                    <li class="nav-item<#= navTitle == title ? " active" : "" #>">
-                        <a class="nav-link" href="<#= navTitle #>.html"><#= navTitle #></a>
+                                        <li class="nav-item active">
+                        <a class="nav-link" href="Rental.html">Rental</a>
                     </li>
-                    <# } #>
-                </ul>
+                                        <li class="nav-item">
+                        <a class="nav-link" href="Customer.html">Customer</a>
+                    </li>
+                                        <li class="nav-item">
+                        <a class="nav-link" href="Vehicle .html">Vehicle </a>
+                    </li>
+                                    </ul>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <h1 class="page-title"><#= title #></h1>
+        <h1 class="page-title">Rental</h1>
         
         <button class="btn btn-success btn-create mb-4" data-toggle="modal" data-target="#createModal">
             <i class="fas fa-plus mr-2"></i>Create New Record
@@ -283,11 +268,7 @@ function deleteRecord(id) {
             <table class="table table-hover" id="data-table">
                 <thead>
                     <tr>
-                    <# foreach (var column in page["Columns"]) {
-                        string columnName = (string)column["Name"];
-                    #><th><#= columnName #></th><#
-                    } #>
-                    <th class="text-right">Actions</th>
+                    <th>RentalId</th><th>RentalDate</th><th>ReturnDate</th><th>RentalFee</th><th>CustomerId</th><th>VehicleId</th>                    <th class="text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -303,13 +284,31 @@ function deleteRecord(id) {
                     </div>
                     <form id="createForm">
                         <div class="modal-body">
-                            <# foreach (var column in page["Columns"]) { #>
-                            <div class="form-group">
-                                <label for="<#= column["Name"] #>"><#= column["Name"] #></label>
-                                <input type="text" class="form-control" name="<#= column["Name"] #>" required>
+                                                        <div class="form-group">
+                                <label for="RentalId">RentalId</label>
+                                <input type="text" class="form-control" name="RentalId" required>
                             </div>
-                            <# } #>
-                        </div>
+                                                        <div class="form-group">
+                                <label for="RentalDate">RentalDate</label>
+                                <input type="text" class="form-control" name="RentalDate" required>
+                            </div>
+                                                        <div class="form-group">
+                                <label for="ReturnDate">ReturnDate</label>
+                                <input type="text" class="form-control" name="ReturnDate" required>
+                            </div>
+                                                        <div class="form-group">
+                                <label for="RentalFee">RentalFee</label>
+                                <input type="text" class="form-control" name="RentalFee" required>
+                            </div>
+                                                        <div class="form-group">
+                                <label for="CustomerId">CustomerId</label>
+                                <input type="text" class="form-control" name="CustomerId" required>
+                            </div>
+                                                        <div class="form-group">
+                                <label for="VehicleId">VehicleId</label>
+                                <input type="text" class="form-control" name="VehicleId" required>
+                            </div>
+                                                    </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Create</button>
@@ -328,13 +327,31 @@ function deleteRecord(id) {
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="editId">
-                        <# foreach (var column in page["Columns"]) { #>
-                        <div class="form-group">
-                            <label for="edit<#= column["Name"] #>"><#= column["Name"] #></label>
-                            <input type="text" class="form-control" id="edit<#= column["Name"] #>" required>
+                                                <div class="form-group">
+                            <label for="editRentalId">RentalId</label>
+                            <input type="text" class="form-control" id="editRentalId" required>
                         </div>
-                        <# } #>
-                    </div>
+                                                <div class="form-group">
+                            <label for="editRentalDate">RentalDate</label>
+                            <input type="text" class="form-control" id="editRentalDate" required>
+                        </div>
+                                                <div class="form-group">
+                            <label for="editReturnDate">ReturnDate</label>
+                            <input type="text" class="form-control" id="editReturnDate" required>
+                        </div>
+                                                <div class="form-group">
+                            <label for="editRentalFee">RentalFee</label>
+                            <input type="text" class="form-control" id="editRentalFee" required>
+                        </div>
+                                                <div class="form-group">
+                            <label for="editCustomerId">CustomerId</label>
+                            <input type="text" class="form-control" id="editCustomerId" required>
+                        </div>
+                                                <div class="form-group">
+                            <label for="editVehicleId">VehicleId</label>
+                            <input type="text" class="form-control" id="editVehicleId" required>
+                        </div>
+                                            </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-primary" onclick="updateRecord()">Save Changes</button>
@@ -348,9 +365,3 @@ function deleteRecord(id) {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-<# 
-    File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString());
-    this.GenerationEnvironment.Clear();
-    Debug.WriteLine($"File written to: {outputFilePath}");
-}
-#>
