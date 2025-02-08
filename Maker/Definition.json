@@ -1,0 +1,72 @@
+{
+    "AppName" : "Rental thingy",
+    "AppVersion" : "1.0",
+    "AppDescription" : "This is a rental thingy",
+    "DbTable" : [{
+      "TableName": "Rental",
+      "Id": "RentalId",
+        "Columns": [{
+            "Name": "RentalId",
+            "Type": "int",
+            "IsPrimaryKey": true
+        }, {
+            "Name": "RentalDate",
+            "Type": "datetime"
+        }, {
+            "Name": "ReturnDate",
+            "Type": "datetime"
+        }, {
+            "Name": "RentalFee",
+            "Type": "decimal"
+        }, {
+            "Name": "CustomerId",
+            "Type": "int"
+        }, {
+            "Name": "ItemId",
+            "Type": "int"
+        }]
+    },
+    {
+      "TableName": "Customer",
+      "Id": "CustomerId",
+        "Columns": [{
+            "Name": "CustomerId",
+            "Type": "int",
+            "IsPrimaryKey": true
+        }, {
+            "Name": "FirstName",
+            "Type": "string"
+        }, {
+            "Name": "LastName",
+            "Type": "string"
+        }, {
+            "Name": "Email",
+            "Type": "string"
+        }]
+    },
+    {
+      "TableName": "Vehicle ",
+      "Id": "VehicleId",
+        "Columns": [{
+            "Name": "VehicleId",
+            "Type": "int",
+            "IsPrimaryKey": true
+        }, {
+            "Name": "Make",
+            "Type": "string"
+        }, {
+            "Name": "Model",
+            "Type": "string"
+        }, {
+            "Name": "Year",
+            "Type": "int"
+        }, {
+            "Name": "Color",
+            "Type": "string"
+        }, {
+            "Name": "DailyRate",
+            "Type": "decimal"
+        }]
+    }]
+  
+}
