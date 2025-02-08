@@ -7,13 +7,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Compile Include="Templates\Html\View.html">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>View.tt</DependentUpon>
-      </Compile>
-    </ItemGroup>
+
 
     <ItemGroup>
       <None Include="Templates\Html\View.cs">
@@ -25,6 +19,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="db\brunoSqlServer.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
+      </None>
+      <None Update="db\brunoSqlServer.sql">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>brunoSqlServer.tt</DependentUpon>
+      </None>
       <None Update="Definition.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

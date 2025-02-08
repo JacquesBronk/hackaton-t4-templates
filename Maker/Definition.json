@@ -1,7 +1,8 @@
 {
-    "AppName" : "Rental thingy",
+    "AppName" : "Rentalthingy",
     "AppVersion" : "1.0",
-    "AppDescription" : "This is a rental thingy",
+    "AppDescription": "This is a rental thingy",
+    "DbName": "Bruno",
     "DbTable" : [{
       "TableName": "Rental",
       "Id": "RentalId",
