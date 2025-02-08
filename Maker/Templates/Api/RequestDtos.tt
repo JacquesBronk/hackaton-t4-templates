@@ -1,0 +1,132 @@
+<#@ template language="C#" debug="true" hostspecific="true" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<#
+// Settings
+string modelName = "Product";
+string dtoFolderPath = "Dtos"; // Folder for Request DTOs
+string dtoNamespace = "YourNamespace.Dtos";
+string mainNamespace = "YourNamespace";
+
+// Properties for the model
+List<(string Type, string Name)> properties = new List<(string Type, string Name)>
+{
+    ("int", "Id"),
+    ("string", "Name"),
+    ("decimal", "Price"),
+    ("int", "Stock")
+};
+
+// Generate file for Request DTOs
+string dtoFileName = $"{modelName}RequestDtos.cs";
+string dtoFilePath = System.IO.Path.Combine(Host.ResolvePath("."), dtoFolderPath, dtoFileName);
+
+// Ensure DTO folder exists
+if (!System.IO.Directory.Exists(dtoFolderPath))
+{
+    System.IO.Directory.CreateDirectory(dtoFolderPath);
+}
+
+string dtoContent = $@"
+namespace {dtoNamespace}
+{{
+    public class Create{modelName}Dto
+    {{
+        {string.Join("\n        ", properties.Where(p => p.Name != "Id").Select(p => $"public {p.Type} {p.Name} {{ get; set; }}"))}
+    }}
+
+    public class Update{modelName}Dto
+    {{
+        {string.Join("\n        ", properties.Select(p => $"public {p.Type} {p.Name} {{ get; set; }}"))}
+    }}
+}}
+";
+System.IO.File.WriteAllText(dtoFilePath, dtoContent);
+
+#>
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace <#= mainNamespace #>
+{
+    public static class <#= modelName #>Endpoints
+    {
+        public static void Map<#= modelName #>Endpoints(this IEndpointRouteBuilder app)
+        {
+            // Get All
+            app.MapGet("/<#= modelName.ToLower() #>s", (List<<#= modelName #>> <#= modelName.ToLower() #>s) =>
+            {
+                return Results.Ok(<#= modelName.ToLower() #>s);
+            });
+
+            // Get by ID
+            app.MapGet("/<#= modelName.ToLower() #>s/{id}", (int id, List<<#= modelName #>> <#= modelName.ToLower() #>s) =>
+            {
+                var item = <#= modelName.ToLower() #>s.FirstOrDefault(x => x.Id == id);
+                return item != null ? Results.Ok(item) : Results.NotFound();
+            });
+
+            // Create
+            app.MapPost("/<#= modelName.ToLower() #>s", (Dtos.Create<#= modelName #>Dto dto, List<<#= modelName #>> <#= modelName.ToLower() #>s) =>
+            {
+                var new<#= modelName #> = new <#= modelName #>
+                {
+<# foreach (var property in properties.Where(p => p.Name != "Id")) { #>
+                    <#= property.Name #> = dto.<#= property.Name #>,
+<# } #>
+                };
+
+                <#= modelName.ToLower() #>s.Add(new<#= modelName #>);
+                return Results.Created($"/<#= modelName.ToLower() #>s/{{new<#= modelName #>.Id}}", new<#= modelName #>);
+            });
+
+            // Update
+            app.MapPut("/<#= modelName.ToLower() #>s/{id}", (int id, Dtos.Update<#= modelName #>Dto dto, List<<#= modelName #>> <#= modelName.ToLower() #>s) =>
+            {
+                var existing<#= modelName #> = <#= modelName.ToLower() #>s.FirstOrDefault(x => x.Id == id);
+                if (existing<#= modelName #> == null)
+                {
+                    return Results.NotFound();
+                }
+
+<# foreach (var property in properties) { #>
+                existing<#= modelName #>.<#= property.Name #> = dto.<#= property.Name #>;
+<# } #>
+                return Results.Ok(existing<#= modelName #>);
+            });
+
+            // Delete
+            app.MapDelete("/<#= modelName.ToLower() #>s/{id}", (int id, List<<#= modelName #>> <#= modelName.ToLower() #>s) =>
+            {
+                var item = <#= modelName.ToLower() #>s.FirstOrDefault(x => x.Id == id);
+                if (item != null)
+                {
+                    <#= modelName.ToLower() #>s.Remove(item);
+                    return Results.NoContent();
+                }
+
+                return Results.NotFound();
+            });
+        }
+
+        // In-memory data for testing
+        public static List<<#= modelName #>> Get<#= modelName #>s() => new List<<#= modelName #>>
+        {
+<# foreach (var i in Enumerable.Range(1, 5)) { #>
+            new <#= modelName #> { Id = <#= i #>, Name = "<#= modelName #> <#= i #>", Price = 10.5m * <#= i #>, Stock = 100 * <#= i #> },
+<# } #>
+        };
+    }
+
+    public class <#= modelName #>
+    {
+<# foreach (var property in properties) { #>
+        public <#= property.Type #> <#= property.Name #> { get; set; }
+<# } #>
+    }
+}
