@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Maker.ShellCommands;
+namespace Runner.ShellCommands;
 
 public class ShellExecutor
 {
