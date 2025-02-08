@@ -103,14 +103,14 @@ public class ShellExecutor
 
         string output = await outputTask;
 
-        _outputHandler("Output:");
+        _outputHandler("Output: success");
         _outputHandler(output);
 
         string error = await errorTask;
 
         if (!string.IsNullOrWhiteSpace(error))
         {
-            _errorHandler("Error:");
+            _errorHandler("Error: ");
             _errorHandler(error);
         }
     }

@@ -1,25 +1,25 @@
 ﻿<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
-<#@ assembly name="Newtonsoft.Json" #>
+<#@ assembly name="System.Text.Json" #>
+<#@ assembly name="System.Memory" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.IO" #>
-<#@ import namespace="Newtonsoft.Json" #>
-<#@ import namespace="Newtonsoft.Json.Linq" #>
+<#@ import namespace="System.Text.Json" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Diagnostics" #>
 <#@ output extension=".html" #>
 
 <# 
-    var JsonDir = Host.ResolvePath("..\\..\\Definition.json");
+    var JsonDir = Host.ResolvePath(".\\Definition.json");
     var Json = System.IO.File.ReadAllText(JsonDir);
-    string jsonContent = File.ReadAllText(jsonFilePath);
-    JObject data = JObject.Parse(jsonContent);
     string outputBasePath = Path.GetDirectoryName(Host.TemplateFile);
       
-    foreach (var page in data["DbTable"])
+    var configurationData =  JsonDocument.Parse(Json).RootElement;
+
+    foreach (var page in configurationData.GetProperty("DbTable").EnumerateArray())
     {
-        string title = (string)page["TableName"];
+        string title = page.GetProperty("TableName").ToString();
         string outputFilePath = Path.Combine(outputBasePath, $"{title}.html");
 #>
 <!DOCTYPE html>
@@ -207,8 +207,8 @@ function editRecord(id) {
         .then(response => response.json())
         .then(data => {
             document.getElementById('editId').value = data.id;
-            <# foreach (var column in page["Columns"]) { #>
-            document.getElementById('edit<#= column["Name"] #>').value = data.<#= column["Name"] #>;
+            <# foreach (var column in page.GetProperty("Columns").EnumerateArray()) { #>
+            document.getElementById('edit<#= column.GetProperty("Name") #>').value = data.<#= column.GetProperty("Name") #>;
             <# } #>
             $('#editModal').modal('show');
         })
@@ -218,8 +218,8 @@ function editRecord(id) {
 function updateRecord() {
     const id = document.getElementById('editId').value;
     const data = {
-        <# foreach (var column in page["Columns"]) { #>
-        <#= column["Name"] #>: document.getElementById('edit<#= column["Name"] #>').value,
+        <# foreach (var column in page.GetProperty("Columns").EnumerateArray()) { #>
+        <#= column.GetProperty("Name") #>: document.getElementById('edit<#= column.GetProperty("Name") #>').value,
         <# } #>
     };
 
@@ -260,8 +260,8 @@ function deleteRecord(id) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <# foreach (var navPage in data["DbTable"]) { 
-                        string navTitle = (string)navPage["TableName"];
+                    <# foreach (var navPage in configurationData.GetProperty("DbTable").EnumerateArray()) { 
+                        string navTitle = navPage.GetProperty("TableName").ToString();
                     #>
                     <li class="nav-item<#= navTitle == title ? " active" : "" #>">
                         <a class="nav-link" href="<#= navTitle #>.html"><#= navTitle #></a>
@@ -283,8 +283,8 @@ function deleteRecord(id) {
             <table class="table table-hover" id="data-table">
                 <thead>
                     <tr>
-                    <# foreach (var column in page["Columns"]) {
-                        string columnName = (string)column["Name"];
+                    <# foreach (var column in page.GetProperty("Columns").EnumerateArray()) {
+                        string columnName = column.GetProperty("Name").ToString();
                     #><th><#= columnName #></th><#
                     } #>
                     <th class="text-right">Actions</th>
@@ -303,10 +303,10 @@ function deleteRecord(id) {
                     </div>
                     <form id="createForm">
                         <div class="modal-body">
-                            <# foreach (var column in page["Columns"]) { #>
+                            <# foreach (var column in page.GetProperty("Columns").EnumerateArray()) { #>
                             <div class="form-group">
-                                <label for="<#= column["Name"] #>"><#= column["Name"] #></label>
-                                <input type="text" class="form-control" name="<#= column["Name"] #>" required>
+                                <label for="<#= column.GetProperty("Name") #>"><#= column.GetProperty("Name") #></label>
+                                <input type="text" class="form-control" name="<#= column.GetProperty("Name") #>" required>
                             </div>
                             <# } #>
                         </div>
@@ -328,10 +328,10 @@ function deleteRecord(id) {
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="editId">
-                        <# foreach (var column in page["Columns"]) { #>
+                        <# foreach (var column in page.GetProperty("Columns").EnumerateArray()) { #>
                         <div class="form-group">
-                            <label for="edit<#= column["Name"] #>"><#= column["Name"] #></label>
-                            <input type="text" class="form-control" id="edit<#= column["Name"] #>" required>
+                            <label for="edit<#= column.GetProperty("Name") #>"><#= column.GetProperty("Name") #></label>
+                            <input type="text" class="form-control" id="edit<#= column.GetProperty("Name") #>" required>
                         </div>
                         <# } #>
                     </div>

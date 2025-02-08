@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
+        <OutputType>Library</OutputType>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -10,17 +10,21 @@
 
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.66" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
       <PackageReference Include="System.Text.Json" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="db\brunoSqlServer.sql">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>brunoSqlServer.tt</DependentUpon>
+      </None>
       <None Update="db\brunoSqlServer.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
-      </None>
-      <None Update="Definition.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Docker\Backend\Backend.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -54,10 +58,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Definition.json" />
       <None Remove="Docker\DockerCompose.tt" />
       <None Remove="Docker\DotnetDockerfile.tt" />
       <None Remove="Docker\WebUiDockerfile.tt" />
       <None Remove="MasterTemplate.tt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Definition.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
