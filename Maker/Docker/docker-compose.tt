@@ -10,7 +10,7 @@
 
 
 <#
-  var JsonDir = ("./Maker/Definition.json");
+  var JsonDir = Host.ResolvePath("..\\Definition.json");
   var Json = System.IO.File.ReadAllText(JsonDir);
   var configurationData =  JsonDocument.Parse(Json).RootElement;
   

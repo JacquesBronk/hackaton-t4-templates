@@ -9,6 +9,7 @@ public class DotnetExecutor : ShellExecutor
     
     public new static DotnetExecutor BuildExecutor() => new DotnetExecutor();
     
+    
     public DotnetExecutor ForProject(string project)
     {
         _project = project;
@@ -57,6 +58,34 @@ public class DotnetExecutor : ShellExecutor
         await BuildExecutor()
             .WithFileName(Commands.Dotnet)
             .WithArgs($"{Commands.DotnetBuild} {project} {GetVerbosityLevel()} {output}")
+            .RedirectStandardOutput(true)
+            .RedirectStandardError(true)
+            .UseShellExecute(false)
+            .CreateNoWindow()
+            .WithOutputHandler(Console.WriteLine)
+            .WithErrorHandler(Console.WriteLine)
+            .StartProcess();
+    }
+    
+    public async Task InstallMonoT4()
+    {
+        await BuildExecutor()
+            .WithFileName(Commands.Dotnet)
+            .WithArgs("tool install --global dotnet-t4")
+            .RedirectStandardOutput(true)
+            .RedirectStandardError(true)
+            .UseShellExecute(false)
+            .CreateNoWindow()
+            .WithOutputHandler(Console.WriteLine)
+            .WithErrorHandler(Console.WriteLine)
+            .StartProcess();
+    }
+    
+    public async Task DotnetGenerateT4File(string ttPath)
+    {
+        await BuildExecutor()
+            .WithFileName("t4")
+            .WithArgs(ttPath)
             .RedirectStandardOutput(true)
             .RedirectStandardError(true)
             .UseShellExecute(false)

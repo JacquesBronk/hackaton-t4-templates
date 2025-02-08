@@ -11,7 +11,8 @@
 <#@ output extension=".html" #>
 
 <# 
-    string jsonFilePath = Host.ResolvePath("..\\..\\Definition.json");
+    var JsonDir = Host.ResolvePath("..\\..\\Definition.json");
+    var Json = System.IO.File.ReadAllText(JsonDir);
     string jsonContent = File.ReadAllText(jsonFilePath);
     JObject data = JObject.Parse(jsonContent);
     string outputBasePath = Path.GetDirectoryName(Host.TemplateFile);

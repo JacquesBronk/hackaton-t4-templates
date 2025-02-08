@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Text.Json" #>
 <#@ assembly name="System.Memory" #>
@@ -7,11 +7,11 @@
 <#@ import namespace="System.Text.Json" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".sql" #>
+
 <#
-  var JsonDir = ("./Maker/Definition.json");
-  var Json = System.IO.File.ReadAllText(JsonDir);
-  // var schema    = InferredSchema.Undefined.Infer(Json);
-  // var objects   = GetObjects(new (), RootClass, schema);
+
+    var JsonDir = Host.ResolvePath("..\\Definition.json");
+    var Json = System.IO.File.ReadAllText(JsonDir);
   var configurationData =  JsonDocument.Parse(Json).RootElement;
 #>
 
