@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,11 +12,11 @@ using System.Linq;
 //  
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
-//     02/08/2025 12:37:47 +00:00
+//     02/08/2025 13:05:19 +00:00
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Generated
+namespace Rentalthingy
 {
     public static class CustomerEndpoints
     {
@@ -24,21 +25,21 @@ namespace Generated
             // Get All
             app.MapGet("/customers", (List<Customer> customers) =>
             {
-                return Results.Ok(customers);
+                return Result.Ok(customers);
             });
 
             // Get by ID
             app.MapGet("/customers/{{id}}", (int id, List<Customer> customers) =>
             {
                 var item = customers.FirstOrDefault(x => x.Id == id);
-                return item != null ? Results.Ok(item) : Results.NotFound();
+                return item != null ? Result.Ok(item) : Result.NotFound();
             });
 
             // Create
             app.MapPost("/customers", (Customer customer, List<Customer> customers) =>
             {
                 customers.Add(customer);
-                return Results.Created($"/customers/{{customer.Id}}", customer);
+                return Result.Created($"/customers/{{customer.Id}}", customer);
             });
 
             // Update
@@ -47,14 +48,14 @@ namespace Generated
                 var existingItem = customers.FirstOrDefault(x => x.Id == id);
                 if (existingItem == null)
                 {
-                    return Results.NotFound();
+                    return Result.NotFound();
                 }
 
                 existingItem.CustomerId = updatedCustomer.CustomerId;
                 existingItem.FirstName = updatedCustomer.FirstName;
                 existingItem.LastName = updatedCustomer.LastName;
                 existingItem.Email = updatedCustomer.Email;
-                return Results.Ok(existingItem);
+                return Result.Ok(existingItem);
             });
 
             // Delete
@@ -64,21 +65,21 @@ namespace Generated
                 if (item != null)
                 {
                     customers.Remove(item);
-                    return Results.NoContent();
+                    return Result.NoContent();
                 }
 
-                return Results.NotFound();
+                return Result.NotFound();
             });
         }
 
         // Example In-Memory Data Source (for testing purposes)
         public static List<Customer> GetCustomers() => new List<Customer>
         {
-            new Customer { Id = 1, Name = "Customer 1", Price = 10.5m * 1, Stock = 100 * 1 },
-            new Customer { Id = 2, Name = "Customer 2", Price = 10.5m * 2, Stock = 100 * 2 },
-            new Customer { Id = 3, Name = "Customer 3", Price = 10.5m * 3, Stock = 100 * 3 },
-            new Customer { Id = 4, Name = "Customer 4", Price = 10.5m * 4, Stock = 100 * 4 },
-            new Customer { Id = 5, Name = "Customer 5", Price = 10.5m * 5, Stock = 100 * 5 },
+            
+            
+            
+            
+            
         
             };
         }

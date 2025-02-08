@@ -15,6 +15,8 @@
     string jsonContent = File.ReadAllText(jsonFilePath);
     JObject data = JObject.Parse(jsonContent);
 
+    var appName =  data["AppName"];
+
     string outputBasePath = Path.GetDirectoryName(Host.TemplateFile);
       
     foreach (var page in data["DbTable"])
@@ -29,6 +31,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,7 +46,7 @@ using System.Linq;
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Generated
+namespace <#= appName #>
 {
     public static class <#= modelName #>Endpoints
     {
@@ -52,21 +55,21 @@ namespace Generated
             // Get All
             app.MapGet("/<#= modelVariableName #>s", (List<<#= modelName #>> <#= modelVariableName #>s) =>
             {
-                return Results.Ok(<#= modelVariableName #>s);
+                return Result.Ok(<#= modelVariableName #>s);
             });
 
             // Get by ID
             app.MapGet("/<#= modelVariableName #>s/{{id}}", (int id, List<<#= modelName #>> <#= modelVariableName #>s) =>
             {
                 var item = <#= modelVariableName #>s.FirstOrDefault(x => x.Id == id);
-                return item != null ? Results.Ok(item) : Results.NotFound();
+                return item != null ? Result.Ok(item) : Result.NotFound();
             });
 
             // Create
             app.MapPost("/<#= modelVariableName #>s", (<#= modelName #> <#= modelVariableName #>, List<<#= modelName #>> <#= modelVariableName #>s) =>
             {
                 <#= modelVariableName #>s.Add(<#= modelVariableName #>);
-                return Results.Created($"/<#= modelVariableName #>s/{{<#= modelVariableName #>.Id}}", <#= modelVariableName #>);
+                return Result.Created($"/<#= modelVariableName #>s/{{<#= modelVariableName #>.Id}}", <#= modelVariableName #>);
             });
 
             // Update
@@ -75,7 +78,7 @@ namespace Generated
                 var existingItem = <#= modelVariableName #>s.FirstOrDefault(x => x.Id == id);
                 if (existingItem == null)
                 {
-                    return Results.NotFound();
+                    return Result.NotFound();
                 }
 
 <#
@@ -83,7 +86,7 @@ namespace Generated
         {
 #>                existingItem.<#= property.Name #> = updated<#= modelName #>.<#= property.Name #>;
 <#      } #>
-                return Results.Ok(existingItem);
+                return Result.Ok(existingItem);
             });
 
             // Delete
@@ -93,10 +96,10 @@ namespace Generated
                 if (item != null)
                 {
                     <#= modelVariableName #>s.Remove(item);
-                    return Results.NoContent();
+                    return Result.NoContent();
                 }
 
-                return Results.NotFound();
+                return Result.NotFound();
             });
         }
 
@@ -106,7 +109,7 @@ namespace Generated
 <#
         foreach (var i in Enumerable.Range(1, 5))
         {
-#>            new <#= modelName #> { Id = <#= i #>, Name = "<#= modelName #> <#= i #>", Price = 10.5m * <#= i #>, Stock = 100 * <#= i #> },
+#>            
 <#      }
 #>        
             };

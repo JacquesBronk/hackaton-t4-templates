@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,11 +14,11 @@ using System.Linq;
 //  
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
-//     02/08/2025 12:37:47 +00:00
+//     02/08/2025 13:05:19 +00:00
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Generated
+namespace Rentalthingy
 {
     public static class RentalEndpoints
     {
@@ -26,21 +27,21 @@ namespace Generated
             // Get All
             app.MapGet("/rentals", (List<Rental> rentals) =>
             {
-                return Results.Ok(rentals);
+                return Result.Ok(rentals);
             });
 
             // Get by ID
             app.MapGet("/rentals/{{id}}", (int id, List<Rental> rentals) =>
             {
                 var item = rentals.FirstOrDefault(x => x.Id == id);
-                return item != null ? Results.Ok(item) : Results.NotFound();
+                return item != null ? Result.Ok(item) : Result.NotFound();
             });
 
             // Create
             app.MapPost("/rentals", (Rental rental, List<Rental> rentals) =>
             {
                 rentals.Add(rental);
-                return Results.Created($"/rentals/{{rental.Id}}", rental);
+                return Result.Created($"/rentals/{{rental.Id}}", rental);
             });
 
             // Update
@@ -49,7 +50,7 @@ namespace Generated
                 var existingItem = rentals.FirstOrDefault(x => x.Id == id);
                 if (existingItem == null)
                 {
-                    return Results.NotFound();
+                    return Result.NotFound();
                 }
 
                 existingItem.RentalId = updatedRental.RentalId;
@@ -58,7 +59,7 @@ namespace Generated
                 existingItem.RentalFee = updatedRental.RentalFee;
                 existingItem.CustomerId = updatedRental.CustomerId;
                 existingItem.VehicleId = updatedRental.VehicleId;
-                return Results.Ok(existingItem);
+                return Result.Ok(existingItem);
             });
 
             // Delete
@@ -68,21 +69,21 @@ namespace Generated
                 if (item != null)
                 {
                     rentals.Remove(item);
-                    return Results.NoContent();
+                    return Result.NoContent();
                 }
 
-                return Results.NotFound();
+                return Result.NotFound();
             });
         }
 
         // Example In-Memory Data Source (for testing purposes)
         public static List<Rental> GetRentals() => new List<Rental>
         {
-            new Rental { Id = 1, Name = "Rental 1", Price = 10.5m * 1, Stock = 100 * 1 },
-            new Rental { Id = 2, Name = "Rental 2", Price = 10.5m * 2, Stock = 100 * 2 },
-            new Rental { Id = 3, Name = "Rental 3", Price = 10.5m * 3, Stock = 100 * 3 },
-            new Rental { Id = 4, Name = "Rental 4", Price = 10.5m * 4, Stock = 100 * 4 },
-            new Rental { Id = 5, Name = "Rental 5", Price = 10.5m * 5, Stock = 100 * 5 },
+            
+            
+            
+            
+            
         
             };
         }
@@ -90,8 +91,8 @@ namespace Generated
     public class Rental
     {
         public int RentalId { get; set; }
-        public datetime RentalDate { get; set; }
-        public datetime ReturnDate { get; set; }
+        public DateTime RentalDate { get; set; }
+        public DateTime ReturnDate { get; set; }
         public decimal RentalFee { get; set; }
         public int CustomerId { get; set; }
         public int VehicleId { get; set; }

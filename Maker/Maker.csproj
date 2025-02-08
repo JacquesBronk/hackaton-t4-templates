@@ -59,6 +59,15 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>Frontend.Dockerfile</LastGenOutput>
       </None>
+      <None Update="Templates\Api\Endpoints.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Endpoints.cs</LastGenOutput>
+      </None>
+      <None Update="Templates\Html\View.html">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>View.tt</DependentUpon>
+      </None>
       <None Update="Templates\Html\View.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>View.html</LastGenOutput>
@@ -74,6 +83,14 @@
       <None Remove="Docker\DotnetDockerfile.tt" />
       <None Remove="Docker\WebUiDockerfile.tt" />
       <None Remove="MasterTemplate.tt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Templates\Api\Endpoints.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Endpoints.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
