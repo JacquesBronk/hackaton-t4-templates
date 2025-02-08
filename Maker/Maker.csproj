@@ -7,13 +7,7 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Compile Include="Templates\Html\View.html">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>View.tt</DependentUpon>
-      </Compile>
-    </ItemGroup>
+
 
     <ItemGroup>
       <None Include="Templates\Html\View.cs">

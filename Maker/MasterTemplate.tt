@@ -9,4 +9,5 @@
     GenerateCompose();
     GenerateApiDockerFile();
     GenerateFrontEndDockerFile();
+    
 #>
