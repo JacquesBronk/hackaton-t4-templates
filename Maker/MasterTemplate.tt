@@ -1,11 +1,12 @@
 ﻿<#@ template language="C#" hostspecific="true" #>
-<#@ output extension=".txt" #>
 <#@ include file="Docker/DockerCompose.tt" #>
 <#@ include file="Docker/DotnetDockerfile.tt" #>
 <#@ include file="Docker/WebUiDockerfile.tt" #>
 <#@ include file="Templates/Html/View.tt" #>
 
 <#
-    // Execute child template functions sequentially
-    WriteLine("---- Child Template 1 Output ----");
+
+    GenerateCompose();
+    GenerateApiDockerFile();
+    GenerateFrontEndDockerFile();
 #>

@@ -47,3 +47,17 @@ ENV PATH="$PATH:/root/.dotnet/tools/tools"
 ENV ASPNETCORE_URLS=http://*:80
 
 ENTRYPOINT ["dotnet", "<#= ProjectName #>.dll"]
+
+<#+
+void GenerateApiDockerFile()
+{
+        if (!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BackEnd")))
+        {
+            Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BackEnd"));
+        }
+    
+    // Write the generated content to a separate Docker Compose file
+    File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BackEnd", "Dockerfile"), this.GenerationEnvironment.ToString());
+    this.GenerationEnvironment.Clear();
+}
+#>
