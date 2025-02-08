@@ -58,7 +58,12 @@ volumes:
 void GenerateCompose()
 {
     // Write the generated content to a separate Docker Compose file
-    File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "docker-compose.yml"), this.GenerationEnvironment.ToString());
+    string appPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "docker-compose.yml");
+    using (File.Create(appPath))
+    {
+      
+    }
+    File.WriteAllText(appPath, this.GenerationEnvironment.ToString());
     this.GenerationEnvironment.Clear();
 }
 #>
