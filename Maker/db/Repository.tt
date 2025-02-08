@@ -1,0 +1,38 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Text.Json" #>
+<#@ assembly name="System.Memory" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+  var JsonDir = ("./Maker/Definition.json");
+  var Json = System.IO.File.ReadAllText(JsonDir);
+  var configurationData =  JsonDocument.Parse(Json).RootElement;
+#>
+
+using Dapper;
+using Microsoft.Data.SqlClient;
+using  <#= configurationData.GetProperty("AppName") #>;
+
+public class Repository(){
+	<#foreach(var table in configurationData.GetProperty("DbTable").EnumerateArray()){#>
+		public List<<#= table.GetProperty("TableName")#>> GetAll<#= table.GetProperty("TableName")#>(){
+			using SqlConnection cn = new(ConnectionString());
+			return cn.Query<<#= table.GetProperty("TableName")#>>("SELECT * FROM <#= table.GetProperty("TableName")#>").ToList();
+		}
+	<#}#>
+	public string ConnectionString(){
+		SqlConnectionStringBuilder builder = new();
+		builder.DataSource = "localhost,1433";
+		builder.InitialCatalog = "<#= configurationData.GetProperty("DbName") #>";
+		builder.UserID = "<#= configurationData.GetProperty("DbUser") #>";
+		builder.Password = "<#= configurationData.GetProperty("DbPassword") #>";
+		builder.TrustServerCertificate = true;
+
+		return builder.ToString();
+	}
+}
+
