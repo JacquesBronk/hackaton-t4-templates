@@ -1,4 +1,4 @@
-﻿namespace Maker.ShellCommands;
+﻿namespace Runner.ShellCommands;
 
 public static class Commands
 {
