@@ -22,7 +22,7 @@
             "Name": "CustomerId",
             "Type": "int"
         }, {
-            "Name": "ItemId",
+            "Name": "VehicleId",
             "Type": "int"
         }]
     },
