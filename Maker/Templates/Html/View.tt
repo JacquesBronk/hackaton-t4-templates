@@ -1,0 +1,56 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Newtonsoft.Json" #>
+
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Diagnostics" #>
+
+<#@ output extension=".html" #>
+
+<# 
+    string jsonFilePath = Host.ResolvePath("..\\..\\Definition.json");
+    string jsonContent = File.ReadAllText(jsonFilePath);
+    JObject data = JObject.Parse(jsonContent);
+
+    string outputBasePath = Path.GetDirectoryName(Host.TemplateFile);
+      
+    foreach (var page in data["DbTable"])
+    {
+        string title = (string)page["TableName"];
+
+        string outputFilePath = Path.Combine(outputBasePath, $"{title}.html");
+#>
+    <!-- Generate an HTML file -->
+    <html>
+    <head>
+        <title><#= title #></title>
+    </head>
+    <body>
+        <h1><#= title #></h1>
+        <table>
+<#
+    foreach (var column in page["Columns"])
+    {
+        string columnName = (string)column["Name"];
+#><th><#= columnName #></th><#
+    }
+#>            
+        </table>
+    </body>
+    </html>
+<# 
+    // Write the generated content to a separate HTML file
+    File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString());
+
+    // Clear the T4 buffer for the next file
+    this.GenerationEnvironment.Clear();
+
+    // Optional logging
+    Debug.WriteLine($"File written to: {outputFilePath}");
+}
+#>
