@@ -8,7 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="NewFolder\" />
+      <Compile Include="Templates\Html\View.html">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>View.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Templates\Html\View.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>View.tt</DependentUpon>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -22,11 +34,6 @@
       <None Update="Templates\Html\View.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>View.html</LastGenOutput>
-      </None>
-      <None Update="Templates\Html\View.html">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>View.tt</DependentUpon>
       </None>
     </ItemGroup>
 

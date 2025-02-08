@@ -28,11 +28,45 @@
     <!-- Generate an HTML file -->
     <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><#= title #></title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+        <title><#= title #></title>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('http://localhost:5000/<#=title#>')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.getElementById('data-table');
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+                            
+                            for (const key in item) {
+                                if (item.hasOwnProperty(key)) {
+                                    const cell = document.createElement('td');
+                                    cell.textContent = item[key];  // Assign the value as the cell content
+                                    row.appendChild(cell);
+                                }
+                            }                            
+
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            });
+        </script>
+
     </head>
     <body>
-        <h1><#= title #></h1>
-        <table>
+        <h1 class="display-4"><#= title #></h1>
+        <table class="table" id="data-table">
+            <thead class="thead-dark">
+                <tr>
 <#
     foreach (var column in page["Columns"])
     {
@@ -40,6 +74,9 @@
 #><th><#= columnName #></th><#
     }
 #>            
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
     </body>
     </html>
