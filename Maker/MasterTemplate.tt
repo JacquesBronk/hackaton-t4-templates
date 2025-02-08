@@ -5,7 +5,7 @@
 <#@ include file="Templates/Html/View.tt" #>
 
 <#
-
+    
     GenerateCompose();
     GenerateApiDockerFile();
     GenerateFrontEndDockerFile();
