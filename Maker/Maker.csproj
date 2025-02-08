@@ -10,32 +10,17 @@
 
 
     <ItemGroup>
-      <None Include="Templates\Html\View.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>View.tt</DependentUpon>
-      </None>
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
       <PackageReference Include="System.Text.Json" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="db\brunoSqlServer.sql">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>brunoSqlServer.tt</DependentUpon>
-      </None>
       <None Update="db\brunoSqlServer.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
       </None>
       <None Update="Definition.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Docker\Backend\Backend.Dockerfile">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Backend.tt</DependentUpon>
       </None>
       <None Update="Docker\Backend\Backend.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -44,16 +29,6 @@
       <None Update="Docker\docker-compose.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>docker-compose.yml</LastGenOutput>
-      </None>
-      <None Update="Docker\docker-compose.yml">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>docker-compose.tt</DependentUpon>
-      </None>
-      <None Update="Docker\Frontend\Frontend.Dockerfile">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Frontend.tt</DependentUpon>
       </None>
       <None Update="Docker\Frontend\Frontend.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
