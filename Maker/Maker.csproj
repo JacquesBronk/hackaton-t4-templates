@@ -20,12 +20,44 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="db\brunoSqlServer.sql">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>brunoSqlServer.tt</DependentUpon>
+      </None>
       <None Update="db\brunoSqlServer.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
       </None>
       <None Update="Definition.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Docker\Backend\Backend.Dockerfile">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Backend.tt</DependentUpon>
+      </None>
+      <None Update="Docker\Backend\Backend.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Backend.Dockerfile</LastGenOutput>
+      </None>
+      <None Update="Docker\docker-compose.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>docker-compose.yml</LastGenOutput>
+      </None>
+      <None Update="Docker\docker-compose.yml">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>docker-compose.tt</DependentUpon>
+      </None>
+      <None Update="Docker\Frontend\Frontend.Dockerfile">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Frontend.tt</DependentUpon>
+      </None>
+      <None Update="Docker\Frontend\Frontend.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Frontend.Dockerfile</LastGenOutput>
       </None>
       <None Update="Templates\Html\View.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -38,13 +70,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="Docker\Frontend\Frontend.tt" />
       <None Remove="Docker\DockerCompose.tt" />
       <None Remove="Docker\DotnetDockerfile.tt" />
       <None Remove="Docker\WebUiDockerfile.tt" />
-      <Compile Include="Docker\Backend\Backend.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-      </Compile>
       <None Remove="MasterTemplate.tt" />
     </ItemGroup>
 

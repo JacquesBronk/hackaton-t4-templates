@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+
+
+    <ItemGroup>
+      <None Include="Templates\Html\View.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>View.tt</DependentUpon>
+      </None>
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+      <PackageReference Include="System.Text.Json" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Definition.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Docker\Frontend\Frontend.Dockerfile">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Frontend.tt</DependentUpon>
+      </None>
+      <None Update="Templates\Html\View.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>View.html</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="Docker\docker-compose.tt" />
+      <Compile Include="Docker\Frontend\Frontend.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>Frontend.Dockerfile</LastGenOutput>
+      </Compile>
+      <None Remove="db\brunoSqlServer.tt" />
+      <None Remove="Docker\docker-compose.tt" />
+      <None Remove="Docker\DockerCompose.tt" />
+      <None Remove="Docker\DotnetDockerfile.tt" />
+      <None Remove="Docker\WebUiDockerfile.tt" />
+      <Page Include="Docker\Backend\Backend.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+      </Page>
+      <None Remove="MasterTemplate.tt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="db\brunoSqlServer.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
+      </Compile>
+    </ItemGroup>
+
+</Project>

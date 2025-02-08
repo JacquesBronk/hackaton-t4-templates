@@ -1,10 +1,12 @@
 ﻿<#@ template language="C#" hostspecific="true" debug="false" #>
 <#@ output extension=".yml" #>
+<#@ assembly name="System.Core" #>
 <#@ assembly name="System.Text.Json" #>
 <#@ assembly name="System.Memory" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Text.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
 
 
 <#
