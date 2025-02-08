@@ -3,3 +3,12 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.vs/T4Templates/CopilotIndices/*
+/.vs/T4Templates/FileContentIndex/*
+/.vs/T4Templates/v17/*
+/.vs/T4Templates/v17/*
+/.vs/ProjectEvaluation/*
+/.vs/T4Templates/DesignTimeBuild/*
+/Maker/db/brunoSqlServer.sql
+*.bin
+*.exe

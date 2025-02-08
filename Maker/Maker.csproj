@@ -25,6 +25,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="db\brunoSqlServer.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
+      </None>
+      <None Update="db\brunoSqlServer.sql">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>brunoSqlServer.tt</DependentUpon>
+      </None>
       <None Update="Definition.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
