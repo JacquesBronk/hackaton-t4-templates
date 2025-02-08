@@ -2,7 +2,7 @@
 
 public static class CommonPaths
 {
-    public static string AppPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Maker");
+    public static string AppPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
     public static string AppDataPath => Path.Combine(AppPath, "AppData");
     
     public static string TempPath => Path.Combine(AppDataPath, "Temp");
