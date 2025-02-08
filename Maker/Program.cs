@@ -1,18 +1,19 @@
 ﻿using System.Text.Json;
-
+using Maker.ShellCommands;
 using Maker.FileHelper;
 
-using Maker.ShellCommands;
+if(!Directory.Exists(CommonPaths.FrontEnd))
+{
+    Directory.CreateDirectory(CommonPaths.FrontEnd);
+}
 
-Console.WriteLine("Let's make a base");
 
-string basePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Definition.json");
 
-Console.WriteLine("Base path: " + basePath);
+if(!Directory.Exists(CommonPaths.BackEnd))
+{
+    Directory.CreateDirectory(CommonPaths.BackEnd);
+}
 
-var jsonFilePath = basePath;
-string jsonContent = File.ReadAllText(jsonFilePath);
-var data = JsonSerializer.Deserialize<JsonDocument>(jsonContent);
 
 // await DotnetExecutor.BuildExecutor()
 //     .ForProject("yourproject.csproj")
