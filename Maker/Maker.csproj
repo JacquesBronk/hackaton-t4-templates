@@ -17,11 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="db\brunoSqlServer.sql">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>brunoSqlServer.tt</DependentUpon>
-      </None>
       <None Update="db\brunoSqlServer.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>brunoSqlServer.sql</LastGenOutput>
@@ -41,11 +36,6 @@
       <None Update="Templates\Api\Endpoints.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>Endpoints.cs</LastGenOutput>
-      </None>
-      <None Update="Templates\Html\View.html">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>View.tt</DependentUpon>
       </None>
       <None Update="Templates\Html\View.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -69,14 +59,6 @@
       <Content Include="Definition.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Templates\Api\Endpoints.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Endpoints.tt</DependentUpon>
-      </Compile>
     </ItemGroup>
 
 </Project>
